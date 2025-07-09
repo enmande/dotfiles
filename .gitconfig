@@ -1,0 +1,25 @@
+[alias]
+  amend = commit -a --amend
+  ci = commit
+  cim = commit -m
+  co = checkout
+  cob = checkout -b
+  current-branch = rev-parse --abbrev-ref HEAD
+  ec = config --global -e
+  lga = log --graph --oneline --all --decorate
+  st = status
+  up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+  wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+  dt = difftool
+[color]
+  ui = auto
+[core]
+  editor = code --new-window --wait
+[diff]
+  tool = vscode
+[difftool "vscode"]
+  cmd = code --new-window --wait --diff $LOCAL $REMOTE
+[merge]
+  tool = vscode
+[mergetool "vscode"]
+  cmd = code --wait $MERGED
