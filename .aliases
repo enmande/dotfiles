@@ -14,6 +14,7 @@ alias please="sudo"
 alias fiwb='sudo $(fc -ln -1)'
 alias which-command='whence -a'
 alias aliasconfig="$EDITOR ~/.aliases"
+alias npmscripts="cat package.json | jq -r '.scripts | keys[]'"
 
 ###############
 #     ZSH     #
@@ -22,3 +23,16 @@ if [ -n "$ZSH_VERSION" ]; then
   alias reload="source ~/.zshrc"
   alias zshconfig="$EDITOR ~/.zshrc"
 fi
+
+###############
+#     🛡️BW    #
+###############
+
+alias goto-server="cd ~/src/bw/server"
+alias goto-client="cd ~/src/bw/clients"
+alias goto-clients="goto-client"
+alias bw-secrets="code ~/src/bw/server/dev/secrets.json"
+alias start-web="cd ~/src/bw/clients/ && npx nx serve web"
+alias start-desktop="cd ~/src/bw/clients/ && npx nx serve desktop"
+alias update-server="cd ~/src/bw/server/ && git switch main && git pull && pushd ./dev && pwsh migrate.ps1 && popd"
+alias update-clients="cd ~/src/bw/clients/ && git switch main && git pull && npm ci"

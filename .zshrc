@@ -4,6 +4,12 @@
 # rust
 [[ -f $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
 
+# dotnet
+[[ -d /usr/local/share/dotnet ]] && export PATH="/usr/local/share/dotnet:$PATH"
+
+# local/bin
+export PATH="~/.local/bin:$PATH"
+
 # nvm  
 export NVM_DIR="$HOME/.nvm"
 
