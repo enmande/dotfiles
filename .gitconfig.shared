@@ -7,7 +7,7 @@
   current-branch = rev-parse --abbrev-ref HEAD
   ec = config --global -e
   lga = log --graph --oneline --all --decorate
-  st = status
+  st = status -s
   up = !git pull --rebase --prune $@ && git submodule update --init --recursive
   wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
   dt = difftool
@@ -24,4 +24,4 @@
 [merge]
   tool = vscode
 [mergetool "vscode"]
-  cmd = code --wait $MERGED
+  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
