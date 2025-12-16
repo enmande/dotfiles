@@ -8,10 +8,14 @@
 [[ -d /usr/local/share/dotnet ]] && export PATH="/usr/local/share/dotnet:$PATH"
 
 # local/bin
-export PATH="~/.local/bin:$PATH"
+[[ -d $HOME/.local/bin ]] && export PATH="$HOME/.local/bin:$PATH"
 
 # nvm  
 export NVM_DIR="$HOME/.nvm"
+
+# bw
+# Set CI to true, avoid non-CI tests unless specifically requested for server
+export CI=1
 
 if [ -d "$NVM_DIR" ]; then
   case "$(uname)" in
@@ -49,7 +53,7 @@ fi
 ###############
 if [[ -d "$HOME/.oh-my-zsh" ]]; then
   export ZSH="$HOME/.oh-my-zsh"
-  ZSH_THEME="takashiyoshida"
+  ZSH_THEME="bureau2"
   HYPHEN_INSENSITIVE="true"
   # DISABLE_AUTO_TITLE="true"
   # ENABLE_CORRECTION="true"
