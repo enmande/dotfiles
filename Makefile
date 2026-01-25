@@ -1,6 +1,7 @@
-DOTFILES := $(filter-out . .. .git .gitignore .config .DS_Store,$(wildcard .??*))
+DOTFILES := $(filter-out . .. .git .gitignore .config .DS_Store .oh-my-zsh,$(wildcard .??*))
 CONFIGFILES := $(shell find .config -type f 2>/dev/null)
-ALLFILES := $(DOTFILES) $(CONFIGFILES)
+ZSHTHEMES := $(shell find .oh-my-zsh .zsh-theme -type f 2>/dev/null)
+ALLFILES := $(DOTFILES) $(CONFIGFILES) $(ZSHTHEMES)
 
 .PHONY: all link clean
 

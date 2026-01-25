@@ -38,7 +38,8 @@ fi
 ###############
 #   EDITORS   #
 ###############
-export EDITOR="nvim"
+unset EDITOR
+export EDITOR=nvim
 
 ###############
 #     OMZ     #
