@@ -1,4 +1,6 @@
-DOTFILES := $(filter-out . .. .git .gitignore,$(wildcard .??*))
+DOTFILES := $(filter-out . .. .git .gitignore .config .DS_Store,$(wildcard .??*))
+CONFIGFILES := $(shell find .config -type f 2>/dev/null)
+ALLFILES := $(DOTFILES) $(CONFIGFILES)
 
 .PHONY: all link clean
 
@@ -6,7 +8,8 @@ all: link
 
 link:
 	@echo "🔗 Linking dotfiles to $(HOME)..."
-	@for file in $(DOTFILES); do \
+	@for file in $(ALLFILES); do \
+		mkdir -p "$$(dirname "$(HOME)/$$file")"; \
 		dest="$(HOME)/$$file"; \
 		if [ -L "$$dest" ]; then \
 			echo "  🔁 Replacing existing symlink: $$dest"; \
@@ -21,7 +24,7 @@ link:
 
 clean:
 	@echo "🧹 Removing dotfile symlinks from $(HOME)..."
-	@for file in $(DOTFILES); do \
+	@for file in $(ALLFILES); do \
 		dest="$(HOME)/$$file"; \
 		if [ -L "$$dest" ]; then \
 			rm "$$dest"; \
