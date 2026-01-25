@@ -38,15 +38,7 @@ fi
 ###############
 #   EDITORS   #
 ###############
-if [[ -n "$SSH_CONNECTION" ]]; then
-  export EDITOR="nano"
-else
-  if command -v code >/dev/null 2>&1; then
-    export EDITOR=(code --wait)
-  else
-    export EDITOR='nano'
-  fi
-fi
+export EDITOR="nvim"
 
 ###############
 #     OMZ     #
@@ -64,5 +56,6 @@ if [[ -d "$HOME/.oh-my-zsh" ]]; then
 else
   echo "⚠️  Oh My Zsh not found — skipping OMZ setup"
 fi
+export FORCE_COLOR=1
 
 source ~/.aliases

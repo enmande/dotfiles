@@ -14,7 +14,7 @@
 [color]
   ui = auto
 [core]
-  editor = code --new-window --wait
+  editor = nvim
 [pager]
   log = cat
 [diff]
