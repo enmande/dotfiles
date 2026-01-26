@@ -25,4 +25,6 @@ vnoremap <leader>p "+p
 " Show all matches for a partial :command (ask 'what can I say here?')
 cnoremap <C-Space> <C-d>
 
-
+" :grep => ripgrep
+set grepprg=rg\ --vimgrep\ --smart-case
+set grepformat=%f:%l:%c:%m
