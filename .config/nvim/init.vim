@@ -1,6 +1,9 @@
 
 let mapleader = " "
 
+set ignorecase
+set smartcase
+
 " Wildmenu
 set wildmenu
 set wildmode=longest:full,full
