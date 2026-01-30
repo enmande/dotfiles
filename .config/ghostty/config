@@ -2,20 +2,15 @@
 
 font-family = "Fira Code"
 font-size = 13
-#font-thicken = true
-background-opacity = .88
+font-thicken = true
+background-opacity = .93
 background-blur = true
 window-height = 35
 window-width = 140
-#background = #1F1D1A
-theme = "xcode dark hc"
+theme = "Gruvbox Dark"
 
 # Full-page
 keybind = ctrl+f=scroll_page_down
 keybind = ctrl+b=scroll_page_up
 
-# Cycle splits
-keybind = ctrl+h=goto_split:left
-keybind = ctrl+j=goto_split:down
-keybind = ctrl+k=goto_split:up
-keybind = ctrl+l=goto_split:right
+keybind = ctrl+[=text:\x1b
