@@ -1,3 +1,21 @@
+
+###############
+#     OMZ     #
+###############
+if [[ -d "$HOME/.oh-my-zsh" ]]; then
+  export ZSH="$HOME/.oh-my-zsh"
+  ZSH_THEME="bureau2"
+  HYPHEN_INSENSITIVE="true"
+  DISABLE_AUTO_TITLE="true"
+  # ENABLE_CORRECTION="true"
+  # DISABLE_UNTRACKED_FILES_DIRTY="true"
+  ZSH_TMUX_AUTOSTART=true
+  plugins=(git extract command-not-found tmux)
+  source $ZSH/oh-my-zsh.sh
+else
+  echo "⚠️  Oh My Zsh not found — skipping OMZ setup"
+fi
+
 ###############
 #   IMPORTS   #
 ###############
@@ -41,22 +59,8 @@ fi
 unset EDITOR
 export EDITOR=nvim
 
-###############
-#     OMZ     #
-###############
-if [[ -d "$HOME/.oh-my-zsh" ]]; then
-  export ZSH="$HOME/.oh-my-zsh"
-  ZSH_THEME="bureau2"
-  HYPHEN_INSENSITIVE="true"
-  # DISABLE_AUTO_TITLE="true"
-  # ENABLE_CORRECTION="true"
-  # DISABLE_UNTRACKED_FILES_DIRTY="true"
-  # ZSH_CUSTOM=/path/to/new-custom-folder
-  plugins=(git extract command-not-found)
-  source $ZSH/oh-my-zsh.sh
-else
-  echo "⚠️  Oh My Zsh not found — skipping OMZ setup"
-fi
+bindkey -v
+export KEYTIMEOUT=1
 export FORCE_COLOR=1
 
 source ~/.aliases
