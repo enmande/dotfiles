@@ -25,3 +25,5 @@
   tool = vscode
 [mergetool "vscode"]
   cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+[push]
+  autoSetupRemote = true
