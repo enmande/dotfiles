@@ -1,3 +1,6 @@
+if !exists('g:vscode')
+  lua require('lsp')
+endif
 
 let mapleader = " "
 
@@ -13,6 +16,7 @@ set wildignorecase
 set wildcharm=<Tab>
 set showcmd
 set showmode
+set completeopt=menu,menuone,noselect
 set inccommand=split
 set incsearch
 
