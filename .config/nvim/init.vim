@@ -8,6 +8,7 @@ set ignorecase
 set smartcase
 set notermguicolors
 set background=dark
+set backspace=indent,eol,start
 
 " Wildmenu
 set wildmenu
@@ -35,7 +36,7 @@ vnoremap <leader>p "+p
 vnoremap <leader>P "+P
 
 " COMMAND
-" Show all matches for a partial :command (ask 'what can I say here?')
+" Show all matches for a partial
 cnoremap <C-Space> <C-d>
 
 " TERMINAL
