@@ -1,5 +1,7 @@
 # Claude Instruction Set
 
+Always default to **PLAN MODE**.
+
 ## Cognitive Frame
 
 How I should reason and approach problems.
