@@ -1,8 +1,10 @@
+let mapleader = " "
+let maplocalleader = ","
+
 if !exists('g:vscode')
   lua require('lsp')
+  lua require('config.lazy')
 endif
-
-let mapleader = " "
 
 set ignorecase
 set smartcase
@@ -23,11 +25,21 @@ set incsearch
 
 " NORMAL
 nnoremap <leader>h :help <C-r><C-w><CR>
-nnoremap <leader>f :Files<CR>
+"nnoremap <leader>f :Files<CR>
 nnoremap <leader>y "+y
 nnoremap <leader>Y "+Y
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
+nnoremap <leader>q :call ToggleQuickfix()<CR>
+function! ToggleQuickfix()
+  for win in getwininfo()
+    if win.quickfix
+      cclose
+      return
+    endif
+  endfor
+  copen
+endfunction
 
 " VISUAL
 vnoremap <leader>y "+y
