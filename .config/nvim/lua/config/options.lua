@@ -1,5 +1,5 @@
-vim.o.termguicolors = false
-vim.o.background = 'dark'
+-- vim.o.termguicolors = false
+-- vim.o.background = 'dark'
 vim.o.backspace = 'indent,eol,start'
 
 -- Wildmenu
