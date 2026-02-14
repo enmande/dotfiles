@@ -16,7 +16,7 @@ If the dotfile already exists as a physical file, `make` will warn you and make 
 🔗 Linking dotfiles to /home/username...
   🔁 Replacing existing symlink: /home/username/.aliases
   ✅ Linked .aliases → /home/username/.aliases
-  ⚠ Skipping (file already exists): /home/username/.gitconfig
+  ⚠️ Skipping (file already exists): /home/username/.gitconfig
   🔁 Replacing existing symlink: /home/username/.zshrc
   ✅ Linked .zshrc → /home/username/.zshrc
 ```
@@ -26,7 +26,7 @@ Use `make clean` to remove existing symlinks for repository dotfiles.
 ```
 🧹 Removing dotfile symlinks from /home/username...
   ❌ Removed symlink: /home/username/.aliases
-  ⚠ Skipping (file already exists): /home/username/.gitconfig
+  ⚠️ Skipping (file already exists): /home/username/.gitconfig
   ❌ Removed symlink: /home/username/.zshrc
 ```
 
