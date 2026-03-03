@@ -1,6 +1,9 @@
 -- vim.o.termguicolors = false
 -- vim.o.background = 'dark'
 vim.o.backspace = 'indent,eol,start'
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.expandtab = true
 
 -- Wildmenu
 vim.o.wildmenu = true
