@@ -2,6 +2,9 @@
 ###############
 #     OMZ     #
 ###############
+if [[ "$TERM_PROGRAM" == "ghostty" && -z "$TMUX" ]]; then
+  ZSH_TMUX_AUTOSTART=true
+fi
 if [[ -d "$HOME/.oh-my-zsh" ]]; then
   export ZSH="$HOME/.oh-my-zsh"
   ZSH_THEME="bureau2"
@@ -9,7 +12,6 @@ if [[ -d "$HOME/.oh-my-zsh" ]]; then
   DISABLE_AUTO_TITLE="true"
   # ENABLE_CORRECTION="true"
   # DISABLE_UNTRACKED_FILES_DIRTY="true"
-  ZSH_TMUX_AUTOSTART=true
   plugins=(git extract command-not-found tmux)
   source $ZSH/oh-my-zsh.sh
 else
