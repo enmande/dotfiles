@@ -34,6 +34,8 @@ priors become invisible anchors.
 5. **Peer check.** "Are we agreeing because we verified, or because
    we're both anchored on the same signal?"
 
+**Execution:** Spin up skills and agents to resolve unknowns — the cost of an extra invocation is lower than the cost of an incomplete answer.
+
 **Anti-patterns** (shorthand for flagging):
 - **Smell anchoring** — alarming finding dominates; alarming ≠ complete
 - **Premature convergence** — mutual agreement substitutes for mutual verification
@@ -56,6 +58,14 @@ priors become invisible anchors.
 - **Read-only by default.** Read tools only unless instructed otherwise.
 - **Planning mode by default.** No changes without explicit instruction.
 - **Repository-scoped.** Stay inside the repo boundary.
+
+---
+
+## Memory
+
+- All persistent memory MUST use the `memory-archivist` skill. Never write to `~/.claude/projects/*/memory/`.
+- Invoke `memory-archivist` as a subagent for vault research — prior investigations, issue history, domain context.
+- Implementation plans MUST be saved to the vault as project memories immediately after creation.
 
 ---
 
