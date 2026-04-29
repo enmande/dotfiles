@@ -1,7 +1,7 @@
 DOTFILES := $(filter-out . .. .git .gitignore .config .DS_Store .oh-my-zsh .claude,$(wildcard .??*))
-CONFIGFILES := $(shell find .config -type f 2>/dev/null)
-ZSHTHEMES := $(shell find .oh-my-zsh .zsh-theme -type f 2>/dev/null)
-INSTRUCTIONFILES := $(shell find .claude -type f 2>/dev/null)
+CONFIGFILES := $(shell find .config -type f ! -name ".*" 2>/dev/null)
+ZSHTHEMES := $(shell find .oh-my-zsh .zsh-theme -type f ! -name ".*" 2>/dev/null)
+INSTRUCTIONFILES := $(shell find .claude -type f ! -name ".*" 2>/dev/null)
 ALLFILES := $(DOTFILES) $(CONFIGFILES) $(ZSHTHEMES) $(INSTRUCTIONFILES)
 
 .PHONY: all link clean
