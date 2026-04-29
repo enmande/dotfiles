@@ -1,11 +1,13 @@
 # https://ghostty.org/docs/config
 
-font-family = "Fira Code"
+font-family = "Jet Brains Mono"
+font-style = Regular
+font-style-italic = Italic
+font-style-bold-italic = Bold Italic
 font-size = 13
-font-thicken = true
 background-opacity = .93
 background-blur = true
-window-height = 35
+window-height = 50
 window-width = 140
 theme = "Gruvbox Dark"
 
