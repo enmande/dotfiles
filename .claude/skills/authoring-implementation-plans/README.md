@@ -28,7 +28,7 @@ Takes a Jira issue from "understood" to "ready to build" through five phases:
 
 ## When to use it
 
-- "Write an implementation plan for PM-XXXXX"
+- "Write an implementation plan for [issue]" 
 - "Plan this out commit by commit"
 - "Draft a commit plan for [issue]"
 - "I'm ready to plan the implementation" (after a ticket has been researched and scoped)
@@ -46,15 +46,12 @@ At the start of every implementation session:
 
 | Artifact | Lives in | Answers |
 |---|---|---|
-| Tech breakdown | `tech-breakdowns` repo | What and why, at the feature/epic level |
-| Task decomposition | `tech-breakdowns` repo | What future Jira stories to create |
-| **design.md** (this skill) | Memory vault, `issues/PM-XXXXX__*/` | Scope, decisions, invariants for one ticket |
-| **plan.md** (this skill) | Memory vault, `issues/PM-XXXXX__*/` | How to build one ticket, in what order, verified how |
-| **manifest.md** (this skill) | Memory vault, `issues/PM-XXXXX__*/` | Where we are right now — live orientation table |
+| **design.md** (this skill) | Memory vault | Scope, decisions, invariants for one ticket |
+| **plan.md** (this skill) | Memory vault | How to build one ticket, in what order, verified how |
+| **manifest.md** (this skill) | Memory vault | Where we are right now — live orientation table |
 
 ## Dependencies
 
 - `memory-archivist` — vault research and write
 - `researching-jira-issues` — Jira issue research
 - `Explore` agent — codebase exemplar grounding
-- Bitwarden Atlassian MCP tools — direct Jira/Confluence access
