@@ -1,6 +1,9 @@
 return {
   'sindrets/diffview.nvim',
   cmd = { 'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewClose' },
+  opts = {
+    use_icons = false,
+  },
   keys = {
     {
       '<leader>gd',
