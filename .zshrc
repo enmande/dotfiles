@@ -1,3 +1,5 @@
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+autoload -Uz compinit && compinit
 
 ###############
 #     OMZ     #
@@ -32,6 +34,8 @@ fi
 
 # nvm  
 export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  
 
 # bw
 # Set CI to true, avoid non-CI tests unless specifically requested for server
