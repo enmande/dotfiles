@@ -8,7 +8,7 @@ font-size = 13
 background-opacity = .93
 background-blur = true
 window-height = 50
-window-width = 140
+window-width = 200
 theme = "Gruvbox Dark"
 
 # Full-page
