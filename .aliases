@@ -16,6 +16,9 @@ alias which-command='whence -a'
 alias aliasconfig="$EDITOR ~/.aliases"
 alias npmscripts="cat package.json | jq -r '.scripts | keys[]'"
 
+alias vi=nvim
+alias vim=nvim
+
 ###############
 #     ZSH     #
 ###############
