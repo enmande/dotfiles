@@ -36,8 +36,9 @@ boundaries — auto-memory is project-local, the vault is universal.
 
 On every invocation:
 1. Resolve the vault path from `$MEMORY_VAULT_PATH`
-2. Read `$MEMORY_VAULT_PATH/VAULT.md` for vault structure, conventions, and operation rules
-3. VAULT.md declares the vault root and all relative paths — derive everything from it
+
+As needed (wayfinding):
+1. Read `$MEMORY_VAULT_PATH/VAULT.md` for vault structure, conventions, and operation rules
 
 The vault owns its schema, its directory layout, and its operation implementations. This skill
 defines operation contracts and behavioral constraints only. 
@@ -69,7 +70,6 @@ A response that has not interrogated the vault as part of its reasoning chain is
 ## Constraints
 
 **ALWAYS:**
-- Bootstrap before any operation — read VAULT.md for current structure and rules
 - Start research with frontmatter grep (cheap) before reading full files (expensive)
 - Use the tag taxonomy for wayfinding — intersect domain + platform + sprint for precise matches
 - Follow wikilinks one level deep from matched notes
