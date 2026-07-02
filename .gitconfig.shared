@@ -11,6 +11,9 @@
   up = !git pull --rebase --prune $@ && git submodule update --init --recursive
   wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
   dt = difftool
+  dv = "!nvim -c DiffviewOpen"
+  dvs = "!nvim -c 'DiffviewOpen --cached'"
+  mt = "!nvim -c DiffviewOpen"
 [color]
   ui = auto
 [core]
@@ -18,12 +21,16 @@
 [pager]
   log = cat
 [diff]
-  tool = vscode
-[difftool "vscode"]
-  cmd = code --new-window --wait --diff $LOCAL $REMOTE
+  tool = nvimdiff
+[difftool]
+  prompt = false
+[difftool "nvimdiff"]
+  cmd = nvim -d "$LOCAL" "$REMOTE"
 [merge]
-  tool = vscode
-[mergetool "vscode"]
-  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+  tool = nvimdiff
+[mergetool]
+  prompt = false
+[mergetool "nvimdiff"]
+  cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" -c '$wincmd w' -c 'wincmd J'
 [push]
   autoSetupRemote = true
