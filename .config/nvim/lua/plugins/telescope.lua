@@ -1,6 +1,6 @@
-
 return {
-  'nvim-telescope/telescope.nvim', version = '0.2.*',
+  'nvim-telescope/telescope.nvim',
+  version = '0.2.1',
   dependencies = {
     'nvim-lua/plenary.nvim', -- Required dependency
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, -- Optional, for C-based fzf sorter

@@ -23,11 +23,15 @@ fi
 ###############
 #   IMPORTS   #
 ###############
+# homebrew
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # rust
 [[ -f $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
 
 # dotnet
 [[ -d /usr/local/share/dotnet ]] && export PATH="/usr/local/share/dotnet:$PATH"
+[[ -d $HOME/.dotnet/tools ]] && export PATH="$HOME/.dotnet/tools:$PATH"
 
 # local/bin
 [[ -d $HOME/.local/bin ]] && export PATH="$HOME/.local/bin:$PATH"

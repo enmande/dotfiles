@@ -2,16 +2,13 @@
 name: memory-archivist
 description: >
   Claude's interface to the memory vault — the shared knowledge base between user and Claude.
-  This skill is a reasoning prerequisite, not an optional enrichment. A plan proposed without 
-  memory vault research is incomplete. A conclusion drawn without checking vault context is unverified.
-  Invoke when: (1) starting any new task — check for prior work, user notes, related issues;
-  (2) creating or reviewing a plan — plans are vault-native documents;
-  (3) drawing conclusions that Complete the Chain requires verification for;
-  (4) the user references a PM ticket, issue, domain keyword, or prior investigation;
-  (5) performing vault maintenance, triage, or health checks.
-  Default to invoking as a subagent to keep main context clean.
-  When in doubt about whether vault context exists, invoke — the cost of a miss is lower than
-  the cost of an incomplete answer.
+  Invoke when the user explicitly asks to check, search, or recall something from the vault
+  (e.g. "check the vault", "what do we know about X", "have we looked at this before"), or when
+  producing a vault-native artifact that must be written there: implementation plans (including
+  those from Skill(authoring-implementation-plans)), investigation notes, triage, or health checks.
+  Do not invoke this proactively at the start of a task, on every conclusion, or just because a
+  ticket was mentioned — searching the vault "just in case" is a context-cleanliness cost paid
+  whether or not it was needed. Default to invoking as a subagent to keep main context clean.
 user-invocable: true
 disable-model-invocation: false
 allowed-tools:
@@ -53,19 +50,22 @@ meta-document that defines your vault's structure, write scopes, and conventions
 existing vault's VAULT.md for the expected format, or create one with sections: Vault Root,
 Write Scope, Frontmatter Schemas, and Health Check Invariants."
 
-## Role in Complete the Chain
+## When This Skill Runs
 
-Memory-archivist is a **required link** in Complete the Chain. Before concluding any substantive
-response, verify:
+Two triggers, and only two:
 
-- **Did I check the vault for prior work on this topic?** Grep frontmatter tags and descriptions
-  before deep-diving. Prior investigations, user notes, and related issue context live here.
-- **If I created a plan, did I write it to the vault?** Plans are vault-native documents, stored
-  per VAULT.md conventions.
-- **If I drew a conclusion, did I check it against vault context?** The vault may contain
-  investigation notes, domain analysis, or user commentary that refines or contradicts.
+- **The user asks.** They want something recalled, checked, or cross-referenced against the
+  vault — "what does the vault say about X", "have we run into this before", etc.
+- **A vault-native artifact is being produced.** Plans (including ones from
+  `Skill(authoring-implementation-plans)`), investigation notes, triage batches, and health-check
+  reports belong in the vault, not a local file or scratch context. Writing them is a property
+  of the artifact, not something gated on being asked.
 
-A response that has not interrogated the vault as part of its reasoning chain is incomplete.
+Do not invoke this skill preemptively "just in case" — at the start of a task, on every
+conclusion, or because a ticket was mentioned in passing. Eager vault probing pays a context
+cost on every invocation regardless of whether that task ever needed vault content. If a
+conclusion needs verification against vault context, that happens when the user points at the
+vault as relevant, not automatically.
 
 ## Constraints
 
@@ -83,7 +83,12 @@ A response that has not interrogated the vault as part of its reasoning chain is
 **NEVER:**
 - Hardcode vault structure or paths — always derive from VAULT.md
 - Modify files outside write-scoped directories (defined in VAULT.md)
-- Modify the user's existing files — create new folders/files only, per VAULT.md write scope
+- Exceed the operation a directory's write-scope tier permits (per VAULT.md's Write Scope
+  table) — full control permits create/read/update/move, limited write permits only
+  create/move/frontmatter, read-only permits none of those
+- Narrate an edit inside an amended document — rewrite affected sections to current
+  state; rationale for a changed decision goes in `design.md` (Locked Decisions or Ticket
+  Reconciliations, as fitting), never layered into the section being amended
 - Duplicate content that exists elsewhere in the vault — link to it instead
 - Move inbox items without user confirmation
 - Create issue folders without user confirmation
@@ -94,7 +99,7 @@ A response that has not interrogated the vault as part of its reasoning chain is
 
 ## Operations
 
-### Research (primary use case)
+### Research (on explicit request)
 
 Search, synthesize, return a concise, chain-complete answer — not raw files. Follow VAULT.md > Search Procedure.
 Stop when results are sufficient. If exhausted, report what was searched and ask user for direction.
@@ -114,6 +119,22 @@ Plans are vault-native documents. One plan, one canonical location.
 5. Validate wikilinks resolve to real files
 
 Plans MUST be written to the vault immediately after creation and confirmation with the user. Do not defer.
+
+### Amending Vault Documents
+
+For deliberate revisions to an existing vault-native document — a replan restructuring
+`plan.md`, a locked decision changing in `design.md` — not routine status ticks (those
+stay direct, per `authoring-implementation-plans`'s "Using the Manifest During
+Implementation").
+
+1. Locate the existing document via the issue folder — never create a duplicate
+2. Rewrite the affected sections to describe the current state only — no layered change
+   history
+3. If the revision is worth recording (per CLAUDE.md's rationale test), record it in
+   `design.md` — Locked Decisions for a changed decision, Ticket Reconciliations for a
+   corrected ticket claim. Otherwise omit it rather than inlining it elsewhere.
+4. Validate wikilinks and frontmatter remain intact after the edit
+5. Confirm with the user before writing if the amendment changes previously-approved scope
 
 ### Writing Investigation Notes
 

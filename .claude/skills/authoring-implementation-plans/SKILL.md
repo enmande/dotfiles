@@ -9,7 +9,8 @@ description: >
   Use when the user asks to "write an implementation plan", "plan this out commit by commit",
   "create a plan for [issue]" or says they're ready to
   plan execution after scoping a ticket. Also use when a prior inline plan needs to be
-  formalized into the memory vault.
+  formalized into the memory vault, or when a locked decision changes mid-implementation and
+  the plan needs to be amended.
 argument-hint: "[<issue-key>]"
 arguments: issue
 allowed-tools: >
@@ -117,7 +118,7 @@ When all decisions are resolved, **draft `design.md`** and present it to the use
 | Context & scope | Always — scope statement, epic/parent, what is NOT touched, gating/rollout mechanism |
 | Visual representation | When the work has a shape a diagram makes obvious — see below |
 | Critical invariants | When there are non-obvious constraints that must survive future refactors. Flag prominently — never buried in body text. |
-| Locked decisions | When design questions were resolved — include rationale, especially deviations from prior art |
+| Locked decisions | When design questions were resolved — include rationale, especially deviations from prior art. When a previously locked decision is later revised, update this entry in place with the new rationale — don't layer a history of the change. |
 | Ticket reconciliations | When the ticket's stated files/patterns differ from the current codebase |
 | Additive-modify surface | The explicit list of existing files this plan touches (helps reviewers assess blast radius) |
 | Deferred / handoffs / open items | When things are explicitly out of scope with a disposition |
@@ -207,6 +208,8 @@ A lightweight orientation table — one row per commit, derived from the commit 
 - **Commit** — the full Conventional Commit title from `plan.md`; for the final verification row,
   use `*(no commit) — manual verification + screen recording*`
 - **Why** — one sentence: why this step exists, why it's isolated at this boundary.
+  Structural, not historical — if the reason changes, rewrite the cell; never append a
+  change history.
 - **Status** — `pending` / `active` / `done`
 
 All steps start `pending`. During implementation, the active step is `active`; completed steps are
@@ -249,6 +252,24 @@ This keeps both you and the user oriented without re-reading the full plan.
 
 ---
 
+## Replanning Mid-Implementation
+
+Triggered when a locked decision changes or the commit sequence needs restructuring —
+not by a routine status tick (those stay direct, per "Using the Manifest" above).
+
+1. Resolve the new decision with the same `AskUserQuestion` discipline as Phase 3
+2. Update the affected `design.md` Locked Decisions entry in place with the new rationale
+   — don't add a second entry layering old-then-new
+3. Rewrite the affected `plan.md` commit entries to the new state only
+4. Hand the revised `design.md` and `plan.md` to `memory-archivist` to write the amendment
+   in place — it applies the current-state-only discipline and validates frontmatter/
+   wikilinks on the way in
+5. Regenerate the affected `manifest.md` rows to match — this also goes through
+   `memory-archivist` as part of the same amendment, even though routine status ticks
+   don't
+
+---
+
 ## Distinguishing these artifacts from other planning documents
 
 | Artifact | Lives in | Answers |
@@ -277,3 +298,10 @@ This keeps both you and the user oriented without re-reading the full plan.
   `plan.md`'s manual testing plan, capture a screen recording, and attach it to the PR before
   requesting review. Waive the recording only when there is genuinely nothing interactive or
   visual to exercise — state that reason explicitly in the plan. Silent omission is not acceptable.
+- **Never narrate a replan inside `plan.md` or `manifest.md`.** When a commit sequence or
+  step changes, rewrite the affected entries to describe the new state only. If the
+  change is worth recording (per CLAUDE.md's rationale test), put it in `design.md` —
+  Locked Decisions for a changed decision, Ticket Reconciliations for a corrected ticket
+  claim — never in `plan.md` or `manifest.md`; otherwise omit it. `plan.md`'s "Why
+  isolated" and `manifest.md`'s "Why" column stay structural (why the boundary exists
+  now), never a record of how it got there.

@@ -21,16 +21,12 @@
 [pager]
   log = cat
 [diff]
-  tool = nvimdiff
-[difftool]
-  prompt = false
-[difftool "nvimdiff"]
-  cmd = nvim -d "$LOCAL" "$REMOTE"
+  tool = vscode
+[difftool "vscode"]
+  cmd = code --new-window --wait --diff $LOCAL $REMOTE
 [merge]
-  tool = nvimdiff
-[mergetool]
-  prompt = false
-[mergetool "nvimdiff"]
-  cmd = nvim -d "$LOCAL" "$BASE" "$REMOTE" "$MERGED" -c '$wincmd w' -c 'wincmd J'
+  tool = vscode
+[mergetool "vscode"]
+  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
 [push]
   autoSetupRemote = true
