@@ -1,11 +1,18 @@
-
 return {
-  'nvim-telescope/telescope.nvim', version = '0.2.*',
+  'nvim-telescope/telescope.nvim',
+  version = '0.2.1',
   dependencies = {
     'nvim-lua/plenary.nvim', -- Required dependency
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, -- Optional, for C-based fzf sorter
   },
   config = function()
+    if vim.fn.executable('rg') == 0 then
+      vim.notify(
+        "telescope: 'rg' (ripgrep) not found on PATH - find_files/live_grep will silently return no results. Install with `brew install ripgrep`.",
+        vim.log.levels.WARN,
+        { title = 'telescope.nvim' }
+      )
+    end
     -- require("telescope").setup{ ... } -- Optional setup
   end,
   keys = {

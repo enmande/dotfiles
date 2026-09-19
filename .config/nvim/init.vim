@@ -9,6 +9,7 @@ set smartcase
 set incsearch
 set showcmd
 set showmode
+set number
 
 " System clipboard
 nnoremap <leader>y "+y

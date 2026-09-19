@@ -1,7 +1,6 @@
----@type LazySpec
 return {
   "mikavilpas/yazi.nvim",
-  version = "*", -- use the latest stable version
+  version = "13.2.0",
   event = "VeryLazy",
   dependencies = {
     { "nvim-lua/plenary.nvim", lazy = true },
@@ -40,5 +39,9 @@ return {
     --
     -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
     vim.g.loaded_netrwPlugin = 1
+
+    -- keep :Explore muscle memory working now that netrw (and its :Explore) is gone
+    vim.api.nvim_create_user_command("Explore", "Yazi", {})
+    vim.api.nvim_create_user_command("E", "Yazi", {})
   end,
 }

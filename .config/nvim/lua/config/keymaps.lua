@@ -1,5 +1,7 @@
 -- Help for word under cursor
 vim.keymap.set('n', '<leader>h', ':help <C-r><C-w><CR>', { desc = 'Help for word under cursor' })
+vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = "Show line diagnostics" })
+
 
 -- Quickfix toggle
 vim.keymap.set('n', '<leader>q', function()
@@ -26,3 +28,8 @@ vim.api.nvim_create_autocmd('TermOpen', {
     vim.keymap.set('n', 'i', 'a', { buffer = true })
   end,
 })
+
+if vim.g.vscode then
+  vim.keymap.set('n', 'gd', function() require('vscode').action('editor.action.revealDefinition') end)
+  vim.keymap.set('n', 'gr', function() require('vscode').action('editor.action.goToReferences') end)
+end

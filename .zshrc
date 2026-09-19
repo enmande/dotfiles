@@ -1,7 +1,12 @@
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+autoload -Uz compinit && compinit
 
 ###############
 #     OMZ     #
 ###############
+if [[ "$TERM_PROGRAM" == "ghostty" && -z "$TMUX" ]]; then
+  ZSH_TMUX_AUTOSTART=true
+fi
 if [[ -d "$HOME/.oh-my-zsh" ]]; then
   export ZSH="$HOME/.oh-my-zsh"
   ZSH_THEME="bureau2"
@@ -9,7 +14,6 @@ if [[ -d "$HOME/.oh-my-zsh" ]]; then
   DISABLE_AUTO_TITLE="true"
   # ENABLE_CORRECTION="true"
   # DISABLE_UNTRACKED_FILES_DIRTY="true"
-  ZSH_TMUX_AUTOSTART=true
   plugins=(git extract command-not-found tmux)
   source $ZSH/oh-my-zsh.sh
 else
@@ -19,17 +23,23 @@ fi
 ###############
 #   IMPORTS   #
 ###############
+# homebrew
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # rust
 [[ -f $HOME/.cargo/env ]] && source "$HOME/.cargo/env"
 
 # dotnet
 [[ -d /usr/local/share/dotnet ]] && export PATH="/usr/local/share/dotnet:$PATH"
+[[ -d $HOME/.dotnet/tools ]] && export PATH="$HOME/.dotnet/tools:$PATH"
 
 # local/bin
 [[ -d $HOME/.local/bin ]] && export PATH="$HOME/.local/bin:$PATH"
 
 # nvm  
 export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  
 
 # bw
 # Set CI to true, avoid non-CI tests unless specifically requested for server
