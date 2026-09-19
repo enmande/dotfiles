@@ -1,8 +1,21 @@
+vim.g.loaded_netrwPlugin = 1  -- yazi handles directories; must be set before plugins load
+
+vim.pack.add({ "https://github.com/nvim-lua/plenary.nvim" })
+vim.pack.add({ "https://github.com/morhetz/gruvbox" })
+vim.pack.add({ "https://github.com/nvim-telescope/telescope.nvim" })
+vim.pack.add({ "https://github.com/mikavilpas/yazi.nvim" })
+vim.pack.add({ "https://github.com/sindrets/diffview.nvim" })
+vim.pack.add({ "https://github.com/lewis6991/gitsigns.nvim" })
+
 require('config.options')
 require('config.keymaps')
 require('config.statusline')
 
 if not vim.g.vscode then
   require('config.lsp')
-  require('config.lazy')
+  require('plugins.gruvbox')
+  require('plugins.telescope')
+  require('plugins.yazi')
+  require('plugins.diffview')
+  require('plugins.gitsigns')
 end
