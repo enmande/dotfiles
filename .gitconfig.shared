@@ -21,12 +21,11 @@
 [pager]
   log = cat
 [diff]
-  tool = vscode
-[difftool "vscode"]
-  cmd = code --new-window --wait --diff $LOCAL $REMOTE
+  tool = nvimdiff
 [merge]
-  tool = vscode
-[mergetool "vscode"]
-  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+  tool = diffview
+[mergetool "diffview"]
+  cmd = nvim -n -c "DiffviewOpen"
+  trustExitCode = false
 [push]
   autoSetupRemote = true
