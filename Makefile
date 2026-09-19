@@ -4,7 +4,7 @@ ZSHTHEMES := $(shell find .oh-my-zsh .zsh-theme -type f ! -name ".*" 2>/dev/null
 INSTRUCTIONFILES := $(shell find .claude -type f ! -name ".*" 2>/dev/null)
 ALLFILES := $(DOTFILES) $(CONFIGFILES) $(ZSHTHEMES) $(INSTRUCTIONFILES)
 
-.PHONY: all link clean
+.PHONY: all link clean prune-links prune-lazy
 
 all: link
 
@@ -36,3 +36,13 @@ clean:
 			continue; \
 		fi; \
 	done
+
+prune-links:
+	@bash scripts/prune-broken-links.sh $(HOME)
+
+prune-lazy:
+	@echo "Removing lazy.nvim plugin clones, state, and bytecode cache..."
+	@rm -rf $(HOME)/.local/share/nvim/lazy
+	@rm -rf $(HOME)/.local/state/nvim/lazy
+	@rm -rf $(HOME)/.cache/nvim/luac
+	@echo "Done."
