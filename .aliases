@@ -16,6 +16,9 @@ alias which-command='whence -a'
 alias aliasconfig="$EDITOR ~/.aliases"
 alias npmscripts="cat package.json | jq -r '.scripts | keys[]'"
 
+alias vi=nvim
+alias vim=nvim
+
 ###############
 #     ZSH     #
 ###############
@@ -24,6 +27,12 @@ if [ -n "$ZSH_VERSION" ]; then
   alias zshconfig="$EDITOR ~/.zshrc"
 fi
 
+
+###############
+#    TOOLS    #
+###############
+alias stop-containers="docker stop $(docker ps -q)"
+
 ###############
 #     🛡️BW    #
 ###############
@@ -31,7 +40,7 @@ fi
 alias goto-server="cd ~/src/bw/server"
 alias goto-client="cd ~/src/bw/clients"
 alias goto-clients="goto-client"
-alias bw-secrets="code ~/src/bw/server/dev/secrets.json"
+alias goto-sdk="cd ~/src/bw/sdk-internal"
 alias start-web="cd ~/src/bw/clients/ && npx nx serve web"
 alias start-desktop="cd ~/src/bw/clients/ && npx nx serve desktop"
 alias update-server="cd ~/src/bw/server/ && git switch main && git pull && pushd ./dev && pwsh migrate.ps1 && popd"
