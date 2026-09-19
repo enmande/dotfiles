@@ -8,13 +8,14 @@ vim.lsp.config.ts_ls = {
 }
 vim.lsp.enable('ts_ls')
 
--- Angular LSP (cmd depends on project root)
+-- Angular LSP (only attach inside Angular/Nx workspaces)
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'typescript', 'html' },
   callback = function()
-    local mono_root = vim.fs.root(0, { 'nx.json', '.git' }) 
-    local global_modules = vim.fn.trim(vim.fn.system('npm root -g'))
-    local probe = table.concat({ mono_root, global_modules }, ',')
+    local root = vim.fs.root(0, { 'angular.json', 'nx.json' })
+    if not root then return end
+
+    local probe = root .. ',' .. vim.fn.trim(vim.fn.system('npm root -g'))
 
     vim.lsp.start({
       name = 'angularls',
