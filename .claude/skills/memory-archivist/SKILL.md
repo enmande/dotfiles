@@ -26,7 +26,7 @@ The memory vault is a shared workspace between the user and Claude. Memory-archi
 bridge — it reads the vault to ground Claude's reasoning, and writes to the vault to persist
 plans, findings, and commentary for the user.
 
-Research first. Write aggressively. The vault is the global knowledge base that crosses project
+Research before you write. The vault is the global knowledge base that crosses project
 boundaries — auto-memory is project-local, the vault is universal.
 
 ## Bootstrap
@@ -77,8 +77,7 @@ vault as relevant, not automatically.
 - Propose triage after writing to inbox — state where it should land and why
 - Enforce vault frontmatter schema on vault-native documents (per VAULT.md)
 - Prompt user to triage inbox items older than 7 days — on every invocation
-- Write aggressively — plans, investigation notes, commentary, analysis all belong in the vault
-- Derive all paths, directory names, and conventions from VAULT.md — never from the skill
+- Write plans, investigation notes, commentary, and analysis to the vault
 
 **NEVER:**
 - Hardcode vault structure or paths — always derive from VAULT.md
@@ -105,7 +104,7 @@ Search, synthesize, return a concise, chain-complete answer — not raw files. F
 Stop when results are sufficient. If exhausted, report what was searched and ask user for direction.
 
 **Return format:** Lead with a direct answer. Cite as `file:line` or wikilinks. Summarize —
-don't quote blocks. Under 40 lines. If the topic is large, list relevant files with one-line
+don't quote blocks. Return only what the caller needs to act. If the topic is large, list relevant files with one-line
 summaries.
 
 ### Writing Plans
@@ -130,9 +129,9 @@ Implementation").
 1. Locate the existing document via the issue folder — never create a duplicate
 2. Rewrite the affected sections to describe the current state only — no layered change
    history
-3. If the revision is worth recording (per CLAUDE.md's rationale test), record it in
-   `design.md` — Locked Decisions for a changed decision, Ticket Reconciliations for a
-   corrected ticket claim. Otherwise omit it rather than inlining it elsewhere.
+3. Record the rationale in `design.md` only when it meets the two-bar test in
+   `authoring-implementation-plans` > Guardrails ("Never narrate a replan"). Otherwise
+   omit it rather than inlining it elsewhere.
 4. Validate wikilinks and frontmatter remain intact after the edit
 5. Confirm with the user before writing if the amendment changes previously-approved scope
 
@@ -180,7 +179,7 @@ Report results with specific findings and suggested fixes.
 
 | Operation | Format |
 |-----------|--------|
-| Research | Concise answer (<40 lines) with `file:line` citations |
+| Research | Concise answer with `file:line` citations |
 | Plan/note creation | Confirmation with file path and triage proposal |
 | Triage | Table of all items with proposed dispositions |
 | Health check | Validation results with specific findings and suggested fixes |

@@ -31,11 +31,15 @@ allowed-tools: >
 
 Help an engineer produce **three vault-native implementation artifacts** for a specific work item/issue:
 
-| Document | Audience | Density | Updated |
-|---|---|---|---|
-| `design.md` | User + reviewers | Medium | Written once |
-| `plan.md` | Claude (implementer) | Dense | Written once; amended on replans |
-| `manifest.md` | User + Claude | Sparse | **Live** — status updated during implementation |
+| Document | Audience | Language | Density | Updated |
+|---|---|---|---|---|
+| `design.md` | User + reviewers (user-first) | Simplified Technical English (STE) | Medium | Written once |
+| `plan.md` | Claude (implementer), scannable by a human | Any structure an implementing agent uses best; STE not required | Dense | Written once; amended on replans |
+| `manifest.md` | User + Claude (user-first) | Simplified Technical English (STE) | Sparse | **Live** — status updated during implementation |
+
+**STE rule for `design.md` and `manifest.md`.** Write all prose in Simplified Technical English (ASD-STE100). Use one word for one meaning. Write descriptions in 25 words or fewer. State one idea in each sentence. Use active voice. Do not use idioms. Spell out each acronym on first use. Code, paths and commands keep their normal syntax.
+
+**`plan.md` format.** Use the structure an implementing agent reads best: tables, checklists, structured blocks. Keep it easy for a human to scan. All required content stays (exemplars, commit entries, verification).
 
 The **manifest** is the orientation artifact. On every session start during implementation, read `manifest.md` first to determine where things stand, which commit is active, and what comes next. It is the answer to "where are we?" without reading 500 lines of plan detail.
 
@@ -43,7 +47,7 @@ The **plan** is Claude's working document during implementation — dense enough
 
 The **design** is the decision record — scope, constraints, invariants, and resolved questions that reviewers and future-you need without digging through commits.
 
-Work through five phases before writing any vault documents. A stage-gate at the end of Phase 3 confirms scope and decisions with the user before commit decomposition begins — this is where expensive misalignments get caught.
+Work through five phases. Write final-named vault documents only after the user approves (Phase 5); DRAFT-marked files are allowed from Phase 3 (see "Draft lifecycle"). A stage-gate at the end of Phase 3 confirms scope and decisions with the user before commit decomposition begins — this is where expensive misalignments get caught. An adversarial review of the design is part of that gate: the user sees `design.md` for approval only after the review is closed.
 
 ---
 
@@ -67,7 +71,7 @@ The goal is to arrive at a precise scope statement before looking at any code.
    - Whether any decisions are already locked (by the assignee, by the ticket, by a prior session)
      vs. still open
 
-Surface ambiguities using `AskUserQuestion` — do not silently pick the path of least resistance. COMPLETE THE CHAIN with an eye for existing contradictions within and across artifacts.
+Surface ambiguities using `AskUserQuestion` — do not silently pick the path of least resistance. Trace each requirement to its source, and check for contradictions within and across artifacts.
 
 ---
 
@@ -81,7 +85,7 @@ to locate the best existing exemplar in the codebase:
 
 - "What's the closest existing implementation of this shape?"
 - Prefer exemplars that are complete, recent, and in the same subsystem
-- ALWAYS use `AskUserQuestion` as a stage-gate: is this the _correct_ exemplar to anchor on, or just the current signal? Objectively explain why it is the signal. Be prepared to chat about reasoning: the initial anchor may be incorrect, or existing exemplars may miss the mark slightly; user will help refine.
+- Use `AskUserQuestion` as a stage-gate: is this the _correct_ exemplar to anchor on, or just the current signal? Objectively explain why it is the signal. Be prepared to chat about reasoning: the initial anchor may be incorrect, or existing exemplars may miss the mark slightly; user will help refine.
 
 Build an **exemplars table** as you go (this lands in `plan.md`):
 
@@ -109,7 +113,26 @@ For each open question surfaced in Phases 1–2:
 Also capture **ticket reconciliations**: places where the ticket's stated file list, class names,
 or patterns are stale or inconsistent with what the current codebase actually looks like.
 
-When all decisions are resolved, **draft `design.md`** and present it to the user as a file they can open and read/respond to inline. NEVER proceed to Phase 4 until the user approves.
+When all decisions are resolved, **draft `design.md`** (in STE) and run the adversarial review below. Then present it to the user as a file they can open and read/respond to inline. Do not proceed to Phase 4 until the user approves.
+
+### Adversarial review of the design (mandatory)
+
+Run this after the `design.md` draft exists and before it goes to the user for approval.
+
+1. Dispatch at least one independent agent with fresh context (not the author). Give it the design draft, the ticket, the exemplars table and the file paths.
+2. Tell it to attack:
+   - contradictions inside and across the artifacts and the ticket
+   - invariants the design can violate: concurrency and races, ordering, security on unauthenticated or pre-validation paths, cost on hot request paths, failure and rollback behavior, flag-on and flag-off behavior
+   - claims not verified against the pinned dependency or source
+   - unstated assumptions
+   - scope drift
+3. Require a findings table: finding, severity, evidence (`file:line`).
+4. The author verifies each finding independently against source. A reviewer can be wrong. Agreement between two agents is not proof.
+5. Resolve user-owned decisions through `AskUserQuestion`, one at a time. Update Locked Decisions in place. Record accepted risks. Close all blockers before asking for approval.
+
+### Draft lifecycle
+
+From the end of Phase 3, write the design to the issue folder as `design.DRAFT.md` so the user can review in place. In Phase 4 use `plan.DRAFT.md` and `manifest.DRAFT.md`. The plain names `design.md`, `plan.md`, `manifest.md` are final and follow the peer plan sets: check a peer folder for the naming and the frontmatter keys (`title`, `issue`, `type`, `date`, `tags`). Phase 5 "Finalize" removes the DRAFT marker.
 
 ### design.md — include whichever sections the ticket warrants
 
@@ -150,7 +173,25 @@ atomic unit of "one logical change, one commit."
 
 **Ordering heuristic:** primitives first, consuming code in the middle, UI/integration
 last. Within that, dependency order — if Commit B needs a type declared in Commit A, A comes
-first.
+first. Characterization tests come first: a characterization commit goes before the first production change and after any test-only prerequisite commits.
+
+### Baseline check when the work changes existing behavior
+
+Run this BEFORE you decompose commits, whenever the ticket changes, gates, replaces or removes existing behavior.
+
+1. Dispatch an agent to inventory the existing unit and integration tests for that behavior.
+2. Measure real coverage with the repo's coverage tool. Cite percentages for lines and branches: unit-only, integration-only, combined. Name the command and the tool. Start any service the integration tests need (for example a cache or a database) per the repo's docs. If integration tests cannot run, say so. Never infer.
+3. List the uncovered behaviors. Check whether the existing "integration" tests go through the real pipeline (for example HTTP) or call internals directly.
+4. If behavior is uncovered, the plan MUST contain a characterization commit (type `test`). Prefer integration tests through the real pipeline for behavior that crosses components. Add unit tests for branches the integration path cannot reach. The commit:
+   - goes before the first production change and after any test-only prerequisite commits
+   - passes on the unmodified base branch
+   - asserts nothing about behavior the plan later removes, so it survives the removal commit
+   - uses self-contained helpers
+   - reuses the naming the later commits need, so they do not edit it
+5. When an expected observed value is unknown, derive it by static analysis of the pinned dependency: inspect the pinned build artifact or read the source at the pinned version, not a web page. Mark it Sourced. If the value still depends on an unverified environment fact, assert a relative check (for example, two inputs give the same result) plus a recorded-value procedure. The plan never holds a TBD.
+6. Put the measured baseline numbers in `plan.md`'s verification section and record a locked decision in `design.md`.
+
+**Reference sweep.** After any insertion, removal or renumbering of commits, sweep every reference to a commit or step number in all three documents: text references, tables, the acceptance-criteria map, migration maps, checklists, diagrams, wikilinks. Write an old-to-new mapping. A second agent, or the author, re-greps independently. The agent that made the edit does not count as its own verification.
 
 ### plan.md contents
 
@@ -166,7 +207,7 @@ first.
   "Modify `Foo.cs` — add method `Bar()`" is useful; "update the service" is not.
 - **Why isolated:** one sentence on why this is its own commit rather than part of the previous
   or next one
-- **AC covered:** which acceptance criteria from the ticket this commit satisfies
+- **AC covered:** which acceptance criteria from the ticket this commit satisfies. A characterization commit uses `AC covered: none (baseline)`.
 
 **Verification** — at the end of `plan.md`, three named sub-sections:
 
@@ -226,7 +267,7 @@ unresolved or a contradiction has surfaced. A plan with a TBD is worse than a pa
 
 ## Phase 5 — Write to Vault
 
-Hand off all vault mechanics to `memory-archivist`. Provide it with:
+Hand off all vault mechanics to skill `memory-archivist`. Provide it with:
 - The issue key and a short description (for naming, if a new folder is needed)
 - All three documents: `design.md`, `plan.md`, `manifest.md`
 - The intent: write these as vault-native documents for this issue
@@ -235,7 +276,23 @@ Memory-archivist owns folder lookup, lifecycle awareness, naming convention, fro
 and the duplicate check. If it reports existing plan documents, do not create duplicates —
 surface what exists to the user and ask whether to update or leave them.
 
-**Write order:** Memory-archivist writes`design.md` first, then `plan.md`, then `manifest.md`. If the write is interrupted, the most durable artifacts land first. Verify its work.
+**Write order:** Memory-archivist writes `design.md` first, then `plan.md`, then `manifest.md`. If the write is interrupted, the most durable artifacts land first.
+
+**Verify its work.** The author checks at least these, and runs at least one check the delegate did not run:
+- identity: `sha256` or `cmp` of each written file against the source
+- names and frontmatter keys (`title`, `issue`, `type`, `date`, `tags`)
+- wikilink resolution
+- manifest row count equals the commit count in `plan.md`, plus the final verification row
+
+### Finalize
+
+The user's approval triggers this step. The authoring session owns removing the `.DRAFT` marker. Do it through `memory-archivist` (or, if that agent is not available in the session, a general agent):
+
+1. Rename each draft to its final name. If the sandbox blocks Bash, write the final file with the Write tool and prove identity with `sha256` or `cmp`.
+2. Delete each draft only after its hash matches the final file.
+3. If deletion fails with "Operation not permitted" in the sandbox, retry outside the sandbox, only for those verified drafts.
+4. Verify: names, frontmatter keys, wikilink resolution, no `DRAFT` string in any final file, manifest rows.
+5. Report the result.
 
 ---
 
@@ -260,7 +317,7 @@ not by a routine status tick (those stay direct, per "Using the Manifest" above)
 1. Resolve the new decision with the same `AskUserQuestion` discipline as Phase 3
 2. Update the affected `design.md` Locked Decisions entry in place with the new rationale
    — don't add a second entry layering old-then-new
-3. Rewrite the affected `plan.md` commit entries to the new state only
+3. Rewrite the affected `plan.md` commit entries to the new state only. When the change alters existing-behavior coverage, repeat the baseline check (Phase 4); uncovered behavior needs a characterization commit. After any insertion, removal or renumbering of commits, run the reference sweep (Phase 4) across all three documents with an independent re-grep.
 4. Hand the revised `design.md` and `plan.md` to `memory-archivist` to write the amendment
    in place — it applies the current-state-only discipline and validates frontmatter/
    wikilinks on the way in
@@ -283,10 +340,13 @@ not by a routine status tick (those stay direct, per "Using the Manifest" above)
 
 ## Guardrails
 
-- **Never write to the vault until Phases 1–3 are complete.** A plan authored before decisions
-  are resolved contains stale assumptions that look like decisions.
+- **Never write the final names (`design.md`, `plan.md`, `manifest.md`) before the user approves.**
+  DRAFT-marked files are allowed from Phase 3 for in-place review. A plan authored before
+  decisions are resolved contains stale assumptions that look like decisions.
 - **Never proceed to Phase 4 without user approval of design.md.** The stage-gate catches scope
   and decision misalignments before commit decomposition begins — fixing them after is expensive.
+- **Never ask the user to approve a design that skipped the adversarial review.**
+- **Never write `design.md` or `manifest.md` prose outside STE.**
 - **Never leave a TBD in the plan.** Surface the open question, resolve it, then write.
 - **Never assume a specific tech stack.** The issue determines the relevant languages, frameworks,
   and layers. Read the ticket and explore the codebase; don't assume.
@@ -300,8 +360,12 @@ not by a routine status tick (those stay direct, per "Using the Manifest" above)
   visual to exercise — state that reason explicitly in the plan. Silent omission is not acceptable.
 - **Never narrate a replan inside `plan.md` or `manifest.md`.** When a commit sequence or
   step changes, rewrite the affected entries to describe the new state only. If the
-  change is worth recording (per CLAUDE.md's rationale test), put it in `design.md` —
-  Locked Decisions for a changed decision, Ticket Reconciliations for a corrected ticket
-  claim — never in `plan.md` or `manifest.md`; otherwise omit it. `plan.md`'s "Why
+  rationale meets one of two bars, record it in `design.md`, never in `plan.md` or
+  `manifest.md`. Otherwise omit it.
+  1. It states a non-obvious reason: a hidden constraint, a deviation from prior art
+     (cite the prior art as `file:line`), or a workaround. Record it in Locked Decisions.
+  2. It corrects an earlier assertion that is now proven false. Cite the proof: a class
+     name, a test or log result, or a source. Record it in Ticket Reconciliations.
+  `plan.md`'s "Why
   isolated" and `manifest.md`'s "Why" column stay structural (why the boundary exists
   now), never a record of how it got there.

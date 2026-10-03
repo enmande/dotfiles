@@ -7,9 +7,8 @@ description: >
   "belling the cat" classification: would an engineer pick this up and drive it on their own
   initiative? Invoke the moment an opportunity surfaces — a skill gap, missing agent type,
   workflow opportunity, tooling friction, or process observation — not batched at session end.
-  This is the disposition procedure Claude's "Practice kaizen" standing rule points to; the
-  noticing itself stays a continuous background instinct that this skill cannot trigger on its
-  own.
+  CLAUDE.md > Improvement and Change Rules points here; the noticing itself stays a continuous
+  background instinct that this skill cannot trigger on its own.
 user-invocable: true
 disable-model-invocation: false
 allowed-tools:
@@ -27,7 +26,7 @@ allowed-tools:
 Kaizen means small, continuous improvement surfaced *during* work, not batched at the end of a
 session. This skill is the disposition procedure for an opportunity once noticed — it does not
 replace the noticing itself, which stays a standing instinct applied across every task (see
-CLAUDE.md's "Practice kaizen" rule). Invoke this the moment something worth logging surfaces: a
+CLAUDE.md > Improvement and Change Rules). Invoke this the moment something worth logging surfaces: a
 skill gap, a missing agent type, a workflow opportunity, recurring tooling friction, or any process
 observation that would help future work — including observations about the delegation layer
 itself, not just implementation-level findings.
@@ -75,5 +74,5 @@ Every kaizen note MUST include:
 - **Never duplicate `memory-archivist`'s job.** This skill decides *whether* and *what*;
   `memory-archivist` decides *where* and *how* it's written.
 - **Triage cadence is not this skill's job.** Once 3+ notes accumulate in the inbox, that's
-  `memory-archivist`'s trigger to run triage (see CLAUDE.md > Feedback disposition) — this skill
-  only handles the moment a single opportunity is noticed and staged.
+  `memory-archivist`'s trigger to run triage — this skill only handles the moment a single
+  opportunity is noticed and staged.
