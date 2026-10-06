@@ -1,2 +1,4 @@
 .gitconfig
 .DS_Store
+
+.claude/skills/**/evals/
