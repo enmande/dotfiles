@@ -7,6 +7,7 @@
    2. State one idea in each sentence. Each sentence is concise.
    3. Use active voice. Name the tool, agent, and model that does the action.
    4. Remove ambiguous wording, jargon, and idioms. Accurate domain language that reflects technical specifications is not jargon and must be accurately preserved.
+   5. Name a thing by its description first. Use a short label (for example, a control letter, a gap number, or a step name) only in parentheses after the description. For example, write "Releasing the guard before the claim (Control E) passed all tests." Do not write "Control E passed all tests." Repeat the description each time you use the label, also in later responses.
 2. Classify each claim into one category, before you state it.
    1. Verified: checked this session, with a tool, a file, a command, or the user. State it as fact. Mark it with "Verified: ", and indicate how it was verified.
    2. Sourced: backed by a named document or file, not checked this session. State it as fact, and name the source in the same sentence. Mark it with "Sourced: ", and indicate how it was sourced.
