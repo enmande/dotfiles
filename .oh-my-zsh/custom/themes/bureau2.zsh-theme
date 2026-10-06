@@ -127,8 +127,25 @@ bureau_precmd () {
   print -rP "$_1LEFT$spaces$right"
 }
 
+### Vi mode [i] / [n]
+
+_VI_MODE="[i]"
+
+bureau_vi_mode () {
+  case $KEYMAP in
+    vicmd) _VI_MODE="[n]" ;;
+    *)     _VI_MODE="[i]" ;;
+  esac
+  zle reset-prompt
+}
+
+zle -N bureau_vi_mode
+autoload -Uz add-zle-hook-widget
+add-zle-hook-widget zle-keymap-select bureau_vi_mode
+add-zle-hook-widget zle-line-init bureau_vi_mode
+
 setopt prompt_subst
-PROMPT='> $_LIBERTY '
+PROMPT='$_VI_MODE > $_LIBERTY '
 RPROMPT='$(nvm_prompt_info) [%*]'
 
 autoload -U add-zsh-hook
