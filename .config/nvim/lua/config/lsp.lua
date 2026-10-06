@@ -86,13 +86,16 @@ vim.api.nvim_create_autocmd('FileType', {
     local root = vim.fs.root(0, { 'angular.json', 'nx.json' })
     if not root then return end
 
-    local probe = root .. ',' .. vim.fn.trim(vim.fn.system('npm root -g'))
+    local global = vim.fn.trim(vim.fn.system('npm root -g'))
+    local probe = root .. ',' .. global
+    -- @angular/language-service ships nested inside the global language server
+    local ng_probe = probe .. ',' .. global .. '/@angular/language-server'
 
     vim.lsp.start({
       name = 'angularls',
       cmd = { 'ngserver', '--stdio',
               '--tsProbeLocations', probe,
-              '--ngProbeLocations', probe,
+              '--ngProbeLocations', ng_probe,
               '--forceStrictTemplates' },
       root_dir = root,
     })
