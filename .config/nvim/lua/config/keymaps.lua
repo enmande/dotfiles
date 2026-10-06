@@ -29,6 +29,21 @@ vim.api.nvim_create_autocmd('TermOpen', {
   end,
 })
 
+-- Folds
+local fold_keys = {
+  { '<leader>oo', 'za', 'editor.toggleFold',            'Toggle fold' },
+  { '<leader>oO', 'zA', 'editor.toggleFoldRecursively', 'Toggle fold recursively' },
+  { '<leader>oc', 'zM', 'editor.foldAll',               'Close all folds' },
+  { '<leader>oe', 'zR', 'editor.unfoldAll',             'Open all folds' },
+  { '<leader>oj', 'zj', 'editor.gotoNextFold',          'Next fold' },
+  { '<leader>ok', 'zk', 'editor.gotoPreviousFold',      'Previous fold' },
+}
+for _, k in ipairs(fold_keys) do
+  local lhs, vim_keys, vscode_cmd, desc = unpack(k)
+  local rhs = vim.g.vscode and function() require('vscode').action(vscode_cmd) end or vim_keys
+  vim.keymap.set('n', lhs, rhs, { desc = desc })
+end
+
 if vim.g.vscode then
   vim.keymap.set('n', 'gd', function() require('vscode').action('editor.action.revealDefinition') end)
   vim.keymap.set('n', 'gr', function() require('vscode').action('editor.action.goToReferences') end)
