@@ -1,22 +1,22 @@
 # fa-th-ur light theme for Ghostty. Copyright (c) 2026 Dave. MIT License.
 # https://github.com/enmande/fa-th-ur
 
-palette = 0=#e8dcc0
-palette = 1=#9a312b
-palette = 2=#5f5b0a
-palette = 3=#7d5a00
-palette = 4=#2e5680
-palette = 5=#74406f
-palette = 6=#356548
-palette = 7=#4e4a45
-palette = 8=#625d57
-palette = 9=#9a312b
-palette = 10=#5f5b0a
-palette = 11=#7d5a00
-palette = 12=#2e5680
-palette = 13=#74406f
-palette = 14=#356548
-palette = 15=#2a2825
+palette = 0=#625d57
+palette = 1=#884205
+palette = 2=#1c4302
+palette = 3=#955904
+palette = 4=#4d3f31
+palette = 5=#5b4400
+palette = 6=#457214
+palette = 7=#d3c6a6
+palette = 8=#676357
+palette = 9=#7a3e16
+palette = 10=#1c4302
+palette = 11=#955904
+palette = 12=#3c3834
+palette = 13=#955904
+palette = 14=#457214
+palette = 15=#e8dcc0
 background = #f2e9d2
 foreground = #3c3834
 cursor-color = #7a4504

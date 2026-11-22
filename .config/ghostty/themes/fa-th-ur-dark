@@ -2,20 +2,20 @@
 # https://github.com/enmande/fa-th-ur
 
 palette = 0=#2a2825
-palette = 1=#f07a6f
-palette = 2=#9cbf6e
-palette = 3=#d2b86e
-palette = 4=#90a7bf
-palette = 5=#b893b9
-palette = 6=#9bbaa3
+palette = 1=#c98a63
+palette = 2=#c3e08e
+palette = 3=#f0b85e
+palette = 4=#cebfa8
+palette = 5=#bfa57a
+palette = 6=#b8c49a
 palette = 7=#b7af9d
 palette = 8=#a29b8b
-palette = 9=#f07a6f
-palette = 10=#9cbf6e
-palette = 11=#d2b86e
-palette = 12=#90a7bf
-palette = 13=#b893b9
-palette = 14=#9bbaa3
+palette = 9=#d9a17d
+palette = 10=#c3e08e
+palette = 11=#f5c77a
+palette = 12=#e5dbc5
+palette = 13=#f5c77a
+palette = 14=#9ccf8a
 palette = 15=#f9f0da
 background = #33302d
 foreground = #e5dbc5
