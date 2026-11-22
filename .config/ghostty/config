@@ -5,11 +5,11 @@ font-style = Regular
 font-style-italic = Italic
 font-style-bold-italic = Bold Italic
 font-size = 13
-background-opacity = .93
+background-opacity = 1
 background-blur = true
 window-height = 50
 window-width = 200
-theme = "light:fa-th-ur light,dark:fa-th-ur dark"
+theme = "light:fa-th-ur-light,dark:fa-th-ur-dark"
 
 # Full-page
 keybind = ctrl+f=scroll_page_down

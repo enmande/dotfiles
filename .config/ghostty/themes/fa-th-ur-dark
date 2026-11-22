@@ -1,0 +1,26 @@
+# fa-th-ur dark theme for Ghostty. Copyright (c) 2026 Dave. MIT License.
+# https://github.com/enmande/fa-th-ur
+
+palette = 0=#2a2825
+palette = 1=#f07a6f
+palette = 2=#9cbf6e
+palette = 3=#d2b86e
+palette = 4=#90a7bf
+palette = 5=#b893b9
+palette = 6=#9bbaa3
+palette = 7=#b7af9d
+palette = 8=#a29b8b
+palette = 9=#f07a6f
+palette = 10=#9cbf6e
+palette = 11=#d2b86e
+palette = 12=#90a7bf
+palette = 13=#b893b9
+palette = 14=#9bbaa3
+palette = 15=#f9f0da
+background = #33302d
+foreground = #e5dbc5
+cursor-color = #e5a54b
+cursor-text = #2a2825
+selection-background = #4e3d23
+selection-foreground = #e5dbc5
+faint-opacity = 0.60
