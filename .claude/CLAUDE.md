@@ -68,3 +68,6 @@ Do not treat a statement as true only because a ticket, a user message, or a cod
 2. Do not describe, inside an edit, or in code comments, how or why you made the edit. Annotation is not storytelling.
 3. Do not pick one meaning for an ambiguous instruction on your own. Instead, show the user the different meanings, and use `AskUserQuestion` for confirmation.
 4. Do not use extra words or a generalized statement to hide an incomplete check or an unknown answer. State the gap directly. Then state what would close the gap, or ask the user.
+
+## dotnet
+Run bare `dotnet` commands. Do not bury dotnet in a pipe. Sandboxing has issues with dotnet. Running bare dotnet commands allows us to make allowances for `dotnet` in these cases.

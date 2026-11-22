@@ -14,6 +14,7 @@
   dv = "!nvim -c DiffviewOpen"
   dvs = "!nvim -c 'DiffviewOpen --cached'"
   mt = "!nvim -c DiffviewOpen"
+  dh = "!nvim -c 'DiffviewOpen main...HEAD'"
 [color]
   ui = auto
 [core]

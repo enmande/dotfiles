@@ -110,7 +110,7 @@ For each open question surfaced in Phases 1–2:
 3. Record the resolution and the rationale, especially when the decision **knowingly deviates from
    prior art** (reviewers will otherwise "correct" it back)
 
-Also capture **ticket reconciliations**: places where the ticket's stated file list, class names,
+Also capture **differences from the ticket**: places where the ticket's stated file list, class names,
 or patterns are stale or inconsistent with what the current codebase actually looks like.
 
 When all decisions are resolved, **draft `design.md`** (in STE) and run the adversarial review below. Then present it to the user as a file they can open and read/respond to inline. Do not proceed to Phase 4 until the user approves.
@@ -128,23 +128,50 @@ Run this after the `design.md` draft exists and before it goes to the user for a
    - scope drift
 3. Require a findings table: finding, severity, evidence (`file:line`).
 4. The author verifies each finding independently against source. A reviewer can be wrong. Agreement between two agents is not proof.
-5. Resolve user-owned decisions through `AskUserQuestion`, one at a time. Update Locked Decisions in place. Record accepted risks. Close all blockers before asking for approval.
+5. Resolve user-owned decisions through `AskUserQuestion`, one at a time. Update the decision text in place, in the section about its topic. Record accepted risks in the risks section. Close all blockers before asking for approval.
 
 ### Draft lifecycle
 
 From the end of Phase 3, write the design to the issue folder as `design.DRAFT.md` so the user can review in place. In Phase 4 use `plan.DRAFT.md` and `manifest.DRAFT.md`. The plain names `design.md`, `plan.md`, `manifest.md` are final and follow the peer plan sets: check a peer folder for the naming and the frontmatter keys (`title`, `issue`, `type`, `date`, `tags`). Phase 5 "Finalize" removes the DRAFT marker.
 
-### design.md — include whichever sections the ticket warrants
+### design.md — technically accurate and readable from top to bottom
 
-| Section | When to include |
-|---|---|
-| Context & scope | Always — scope statement, epic/parent, what is NOT touched, gating/rollout mechanism |
-| Visual representation | When the work has a shape a diagram makes obvious — see below |
-| Critical invariants | When there are non-obvious constraints that must survive future refactors. Flag prominently — never buried in body text. |
-| Locked decisions | When design questions were resolved — include rationale, especially deviations from prior art. When a previously locked decision is later revised, update this entry in place with the new rationale — don't layer a history of the change. |
-| Ticket reconciliations | When the ticket's stated files/patterns differ from the current codebase |
-| Additive-modify surface | The explicit list of existing files this plan touches (helps reviewers assess blast radius) |
-| Deferred / handoffs / open items | When things are explicitly out of scope with a disposition |
+The design has two jobs. It must be exact enough that a reviewer can check every claim against source. It must also be easy for a person to read once, from top to bottom, and understand. A design that is accurate but hard to read gets skimmed, and the reviewer then misses the decision that matters. Both jobs have equal weight.
+
+**Organize by topic, in reader order.** Do not organize by artifact type (an invariants table, then a decisions table, then a reconciliations table, then a risks table). That layout makes the reader jump: a rule in one table points to its reason in a second table and its risk in a third. Put each rule, its reason, its evidence, and its deviation from prior art together, in the section about that topic. Order the sections so that each term is defined before a later section uses it.
+
+**Do not use label pointers.** Do not write `I-1`, `D-2`, `R-3`, or `A-4` in the body. A label forces the reader to look up its meaning in another place. Name the thing by its description. When a cross-reference is necessary (most often in a table cell), point to a numbered section ("section 5.4"). Keep the text near the reference understandable without it.
+
+**Write the rationale inline.** Put the reason directly after the rule. Use a short numbered list of reasons when there is more than one. Record a user decision in the same place, with its date ("The user made this decision on 2026-11-02."). When a decision changes later, rewrite that text in place to the new state.
+
+**Use STE in every sentence.** Use short sentences, one idea in each sentence, active voice, and one word for one meaning. Use a numbered list for a procedure, a table for a comparison, and a diagram for a shape. Do not write a long paragraph. Label each claim Verified, Sourced, or ⚠️ Unverified, with its evidence (`file:line`, a pinned DLL, a named document).
+
+**Number the sections.** Numbered headings (`## 5.`, `### 5.4`) let the user and the reviewers point to one place ("5.4: does this mean...?").
+
+A typical section order follows. Include only the sections that the ticket needs, and rename them to fit the topic.
+
+| # | Section | Contains |
+|---|---|---|
+| 1 | The problem and the goal | What changes and why. A before-and-after table when the work changes an existing behavior. The ticket, the epic, related tickets, earlier notes, and the base commit. What is out of scope. |
+| 2 | The control mechanism | A flag, configuration, or a deploy, and why. When there is no flag, say whether that is a technical limit or a choice. Give the evidence. |
+| 3 | Where the code lives | A table: concern, file on the base branch, lines. |
+| 4 onward | One section for each topic | For example: the settings or data shape, the runtime behavior (diagram first), the rules that must survive refactors, and the wiring. Each section holds its rules, the reasons, the evidence, the prior art, and the deviations. Make a rule that must survive refactors visible, for example in bold or in its own subsection. |
+| — | Behavior compared to the base branch | What stays the same with no new configuration or flag, the conditions for that, and each exception. |
+| — | How the work is built | Test-first order, dependencies on other branches, and where the documentation commit goes. |
+| — | Procedures | Operator or rollout steps, as numbered lists or a stage table. Include verify and rollback steps. |
+| — | Coordination | A table: party, artifact, gate and order. |
+| — | Accepted risks | One subsection for each risk: the risk, the evidence, the mitigation. |
+| — | Differences from the ticket | A table: the ticket statement and the result in this design, with the section that explains it. |
+| — | Files that change | The list of existing files that this plan touches. It helps reviewers judge the scope of the change. |
+| — | Open items and handoffs | Each item that is out of scope, with its owner and gate. |
+
+A worked example of this layout is `issues/PM-42172__identity-and-sso-certificate-separation-and-rotation/design.md` in the memory vault.
+
+**Readability check before approval.** Before you show the design to the user:
+
+1. Run a grep for label pointers (`\b[IDRA]-[0-9]+\b`). The result must be empty.
+2. Read the design from top to bottom. Find each term that a section uses before the section that defines it. Move the definition earlier, or add one short definition in place.
+3. Check that each rule has its reason next to it, and that no reason sits only in another section.
 
 #### Visual representation
 
@@ -189,7 +216,7 @@ Run this BEFORE you decompose commits, whenever the ticket changes, gates, repla
    - uses self-contained helpers
    - reuses the naming the later commits need, so they do not edit it
 5. When an expected observed value is unknown, derive it by static analysis of the pinned dependency: inspect the pinned build artifact or read the source at the pinned version, not a web page. Mark it Sourced. If the value still depends on an unverified environment fact, assert a relative check (for example, two inputs give the same result) plus a recorded-value procedure. The plan never holds a TBD.
-6. Put the measured baseline numbers in `plan.md`'s verification section and record a locked decision in `design.md`.
+6. Put the measured baseline numbers in `plan.md`'s verification section and record the decision in `design.md`, in the section about how the work is built.
 
 **Reference sweep.** After any insertion, removal or renumbering of commits, sweep every reference to a commit or step number in all three documents: text references, tables, the acceptance-criteria map, migration maps, checklists, diagrams, wikilinks. Write an old-to-new mapping. A second agent, or the author, re-greps independently. The agent that made the edit does not count as its own verification.
 
@@ -315,7 +342,7 @@ Triggered when a locked decision changes or the commit sequence needs restructur
 not by a routine status tick (those stay direct, per "Using the Manifest" above).
 
 1. Resolve the new decision with the same `AskUserQuestion` discipline as Phase 3
-2. Update the affected `design.md` Locked Decisions entry in place with the new rationale
+2. Update the affected `design.md` decision text in place, in the section about its topic, with the new rationale
    — don't add a second entry layering old-then-new
 3. Rewrite the affected `plan.md` commit entries to the new state only. When the change alters existing-behavior coverage, repeat the baseline check (Phase 4); uncovered behavior needs a characterization commit. After any insertion, removal or renumbering of commits, run the reference sweep (Phase 4) across all three documents with an independent re-grep.
 4. Hand the revised `design.md` and `plan.md` to `memory-archivist` to write the amendment
@@ -363,9 +390,9 @@ not by a routine status tick (those stay direct, per "Using the Manifest" above)
   rationale meets one of two bars, record it in `design.md`, never in `plan.md` or
   `manifest.md`. Otherwise omit it.
   1. It states a non-obvious reason: a hidden constraint, a deviation from prior art
-     (cite the prior art as `file:line`), or a workaround. Record it in Locked Decisions.
+     (cite the prior art as `file:line`), or a workaround. Record it next to the rule, in the section about its topic.
   2. It corrects an earlier assertion that is now proven false. Cite the proof: a class
-     name, a test or log result, or a source. Record it in Ticket Reconciliations.
+     name, a test or log result, or a source. Record it in "Differences from the ticket".
   `plan.md`'s "Why
   isolated" and `manifest.md`'s "Why" column stay structural (why the boundary exists
   now), never a record of how it got there.

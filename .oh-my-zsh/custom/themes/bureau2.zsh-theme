@@ -74,6 +74,12 @@ bureau_git_prompt() {
     return
   fi
 
+  if [[ "$(command git rev-parse --is-bare-repository 2>/dev/null)" == "true" ]]; then
+    local gitdir="$(command git rev-parse --absolute-git-dir 2>/dev/null)"
+    echo "${ZSH_THEME_GIT_PROMPT_PREFIX}${gitdir:t:gs/%/%%}${ZSH_THEME_GIT_PROMPT_SUFFIX}"
+    return
+  fi
+
   # check git information
   local gitinfo=$(bureau_git_info)
   if [[ -z "$gitinfo" ]]; then

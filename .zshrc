@@ -63,6 +63,11 @@ if [ -d "$NVM_DIR" ]; then
   [ -s "$NVM_COMPLETION" ] && source "$NVM_COMPLETION"
 fi
 
+##############
+#     SSH     #
+###############
+export SSH_AUTH_SOCK=~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
+
 ###############
 #   EDITORS   #
 ###############

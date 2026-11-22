@@ -47,4 +47,5 @@ end
 if vim.g.vscode then
   vim.keymap.set('n', 'gd', function() require('vscode').action('editor.action.revealDefinition') end)
   vim.keymap.set('n', 'gr', function() require('vscode').action('editor.action.goToReferences') end)
+  vim.keymap.set('n', 'gi', function() require('vscode').action('editor.action.goToImplementation') end)
 end
